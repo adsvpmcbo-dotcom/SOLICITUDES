@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formato de Solicitud de Producto</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+Pro:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+        }
+        
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .form-content {
+            padding: 40px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .required::after {
+            content: ' *';
+            color: #e53e3e;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+        
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .input-icon {
+            position: relative;
+        }
+        
+        .input-icon input,
+        .input-icon select {
+            padding-left: 45px;
+        }
+        
+        .icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+            font-size: 1.2em;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 30px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .info-box-icon {
+            font-size: 2em;
+            background: rgba(255,255,255,0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .info-box-content h3 {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .info-box-content p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        .section-divider {
+            display: flex;
+            align-items: center;
+            margin: 40px 0 30px;
+            color: #4a5568;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+        }
+        
+        .section-divider::before,
+        .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #cbd5e0, transparent);
+        }
+        
+        .section-divider span {
+            padding: 0 20px;
+            background: rgba(255,255,255,0.95);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 15px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-item:hover {
+            border-color: #667eea;
+            background: #edf2f7;
+        }
+        
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: #667eea;
+            cursor: pointer;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+        
+        .btn-secondary {
+            background: #edf2f7;
+            color: #4a5568;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            transform: translateY(-3px);
+        }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            color: #718096;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
+        
+        /* Animaciones */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .form-group {
+            animation: slideIn 0.5s ease forwards;
+        }
+        
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Solicitud de Producto</h1>
+            <p>Complete el siguiente formulario para solicitar productos o materiales</p>
+        </div>
+        
+        <div class="form-content">
+            <form id="solicitudForm">
+                <!-- Información General -->
+                <div class="section-divider">
+                    <span>Información del Solicitante</span>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="solicitante" class="required">Nombre del Solicitante</label>
+                        <div class="input-icon">
+                            <span class="icon">👤</span>
+                            <input type="text" id="solicitante" name="solicitante" required placeholder="Ingrese su nombre completo">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="departamento" class="required">Departamento/Área</label>
+                        <div class="input-icon">
+                            <span class="icon">🏢</span>
+                            <select id="departamento" name="departamento" required>
+                                <option value="">Seleccione departamento...</option>
+                                <option value="administracion">Administración</option>
+                                <option value="ventas">Ventas</option>
+                                <option value="produccion">Producción</option>
+                                <option value="almacen">Almacén</option>
+                                <option value="sistemas">Sistemas/TI</option>
+                                <option value="rrhh">Recursos Humanos</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fecha" class="required">Fecha de Solicitud</label>
+                        <div class="input-icon">
+                            <span class="icon">📅</span>
+                            <input type="date" id="fecha" name="fecha" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="prioridad">Nivel de Prioridad</label>
+                        <div class="input-icon">
+                            <span class="icon">⚡</span>
+                            <select id="prioridad" name="prioridad">
+                                <option value="baja">Baja</option>
+                                <option value="media" selected>Media</option>
+                                <option value="alta">Alta</option>
+                                <option value="urgente">Urgente</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Detalles del Producto -->
+                <div class="section-divider">
+                    <span>Detalles del Producto</span>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="producto" class="required">Nombre del Producto</label>
+                        <div class="input-icon">
+                            <span class="icon">📦</span>
+                            <input type="text" id="producto" name="producto" required placeholder="Ej: Laptop Dell Inspiron, Tornillos de acero inoxidable, etc.">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cantidad" class="required">Cantidad Requerida</label>
+                        <div class="input-icon">
+                            <span class="icon">🔢</span>
+                            <input type="number" id="cantidad" name="cantidad" min="1" required placeholder="Ej: 5">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="unidad">Unidad de Medida</label>
+                        <div class="input-icon">
+                            <span class="icon">📏</span>
+                            <select id="unidad" name="unidad">
+                                <option value="unidades">Unidades</option>
+                                <option value="kilos">Kilogramos</option>
+                                <option value="litros">Litros</option>
+                                <option value="metros">Metros</option>
+                                <option value="cajas">Cajas</option>
+                                <option value="paquetes">Paquetes</option>
+                                <option value="rollos">Rollos</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modelo">Modelo/Marca</label>
+                        <div class="input-icon">
+                            <span class="icon">🏷️</span>
+                            <input type="text" id="modelo" name="modelo" placeholder="Ej: Dell Inspiron 15 3000, 3M Scotch, etc.">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="especificaciones">Especificaciones Técnicas</label>
+                        <input type="text" id="especificaciones" name="especificaciones" placeholder="Ej: 16GB RAM, 512GB SSD, Color negro">
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="descripcion">Descripción Detallada</label>
+                    <textarea id="descripcion" name="descripcion" placeholder="Describa las características específicas, dimensiones, materiales o cualquier detalle relevante del producto..."></textarea>
+                </div>
+                
+                <!-- Uso y Duración -->
+                <div class="section-divider">
+                    <span>Uso y Duración Estimada</span>
+                </div>
+                
+                <div class="info-box">
+                    <div class="info-box-icon">💡</div>
+                    <div class="info-box-content">
+                        <h3>Información Importante</h3>
+                        <p>Esta información ayuda a determinar la inversión y planificación de recursos.</p>
+                    </div>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="uso" class="required">Propósito/Utilización</label>
+                        <textarea id="uso" name="uso" required placeholder="Explique detalladamente para qué se utilizará este producto, en qué proyecto o proceso específico, y quiénes lo usarán..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="duracion" class="required">Tiempo de Vida Útil Estimado</label>
+                        <div class="input-icon">
+                            <span class="icon">⏱️</span>
+                            <select id="duracion" name="duracion" required>
+                                <option value="">Seleccione...</option>
+                                <option value="1-mes">1 mes o menos</option>
+                                <option value="3-meses">1-3 meses</option>
+                                <option value="6-meses">3-6 meses</option>
+                                <option value="1-anio">6 meses - 1 año</option>
+                                <option value="2-anios">1-2 años</option>
+                                <option value="3-anios">2-3 años</option>
+                                <option value="5-anios">3-5 años</option>
+                                <option value="mas-5">Más de 5 años</option>
+                                <option value="indefinido">Uso indefinido/permanente</option>
+                                <option value="consumible">Consumible (uso único)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="fecha-necesidad">Fecha de Necesidad</label>
+                        <div class="input-icon">
+                            <span class="icon">🎯</span>
+                            <input type="date" id="fecha-necesidad" name="fecha-necesidad">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>¿Requiere algún servicio adicional?</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="servicios" value="instalacion">
+                            <span>Instalación</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="servicios" value="capacitacion">
+                            <span>Capacitación</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="servicios" value="mantenimiento">
+                            <span>Mantenimiento</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="servicios" value="garantia">
+                            <span>Garantía extendida</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="servicios" value="soporte">
+                            <span>Soporte técnico</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label for="observaciones">Observaciones Adicionales</label>
+                    <textarea id="observaciones" name="observaciones" placeholder="Cualquier información adicional relevante para la solicitud..."></textarea>
+                </div>
+                
+                <div class="actions">
+                    <button type="reset" class="btn btn-secondary">Limpiar Formulario</button>
+                    <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+                </div>
+                
+                <p class="footer-note">
+                    * Los campos marcados son obligatorios. La solicitud será revisada por el departamento de compras.
+                </p>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        // Establecer fecha actual por defecto
+        document.getElementById('fecha').valueAsDate = new Date();
+        
+        // Validación del formulario
+        document.getElementById('solicitudForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Animación de éxito
+            const btn = document.querySelector('.btn-primary');
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Enviado exitosamente';
+            btn.style.background = 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)';
+            
+            setTimeout(() => {
+                alert('Solicitud enviada correctamente. Se ha generado el número de seguimiento: SOL-' + Date.now());
+                btn.textContent = originalText;
+                btn.style.background = '';
+                this.reset();
+                document.getElementById('fecha').valueAsDate = new Date();
+            }, 1000);
+        });
+        
+        // Efectos de interactividad
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
